@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GXT Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GXT文本查看器 - By：Lzh10_慕黑 | GTAmod中文组</h1>
+        <input type="file" id="fileInput" accept=".gxt">
+        <button id="browseButton">📄 浏览GXT</button>
+        <button id="convertButton">🔄 码表转换</button>
+        <button id="saveButton">💾 保存文本</button>
+        <button id="clearButton">🗑️ 清空表格</button>
+        <table id="outputTable">
+            <thead>
+                <tr>
+                    <th>键值</th>
+                    <th>内容</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>关于内容...</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
