@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = this.startIndex; i < this.endIndex; i++) {
                 const row = this.renderRow(i);
                 row.style.position = 'absolute';
+//                row.style.top = `${i * this.rowHeight}px`;
                 row.style.top = `${i * this.rowHeight}px`;
                 this.container.appendChild(row);
             }

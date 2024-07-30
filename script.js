@@ -4,7 +4,7 @@ document.getElementById('browseButton').addEventListener('click', () => {
 
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
-document.getElementById('convertButton').addEventListener('click', convertUsingTable);
+document.getElementById('moreButton').addEventListener('click', moreFeatures);
 document.getElementById('saveButton').addEventListener('click', saveGeneratedTxt);
 document.getElementById('clearButton').addEventListener('click', clearTable);
 
@@ -282,8 +282,13 @@ function _parseTables(stream) {
     return Tables;
 }
 
-function convertUsingTable() {
-    alert('码表转换功能待实现');
+function moreFeatures() {
+    alert('下载本地版获取码表转换功能以及更快解析效率！');
+    var link = document.createElement('a');
+    link.href = 'https://github.com/Lzh102938/III.VC.SAGXTExtracter/releases/download/V1.2.5/III.VC.SAGXTExtracter.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 function saveGeneratedTxt() {
