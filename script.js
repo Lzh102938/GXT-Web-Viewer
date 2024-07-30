@@ -154,8 +154,8 @@ class VC {
         return _parseTables(stream);
     }
 
-    parseTKeyTDat(stream) {
-        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY');
+    parseTKeyTDat(stream, offset = 0) {
+        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY', offset);
         const TKey = [];
 
         for (let i = 0; i < tkeySize / 12; i++) {
@@ -165,7 +165,7 @@ class VC {
             });
         }
 
-        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT');
+        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT', offset);
         const TDat = new Uint8Array(stream.buffer.slice(tdatOffset, tdatOffset + tdatSize));
 
         return TKey.map(entry => {
@@ -185,8 +185,8 @@ class SA {
         return _parseTables(stream);
     }
 
-    parseTKeyTDat(stream) {
-        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY');
+    parseTKeyTDat(stream, offset = 0) {
+        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY', offset);
         const TKey = [];
 
         for (let i = 0; i < tkeySize / 8; i++) {
@@ -196,7 +196,7 @@ class SA {
             });
         }
 
-        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT');
+        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT', offset);
         const TDat = new Uint8Array(stream.buffer.slice(tdatOffset, tdatOffset + tdatSize));
 
         return TKey.map(entry => {
@@ -219,8 +219,8 @@ class IV {
         return _parseTables(stream);
     }
 
-    parseTKeyTDat(stream) {
-        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY');
+    parseTKeyTDat(stream, offset = 0) {
+        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY, offset');
         const TKey = [];
 
         for (let i = 0; i < tkeySize / 8; i++) {
@@ -230,7 +230,7 @@ class IV {
             });
         }
 
-        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT');
+        const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT', offset);
         const TDat = new Uint8Array(stream.buffer.slice(tdatOffset, tdatOffset + tdatSize));
 
         return TKey.map(entry => {
@@ -253,8 +253,8 @@ class IV {
     }
 }
 
-function findBlock(stream, block) {
-    let offset = 0;
+function findBlock(stream, block, startOffset = 0) {
+    let offset = startOffset;
     const blockLength = 8;
 
     while (offset < stream.byteLength) {

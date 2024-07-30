@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
 
 body {
-    font-family: 'Noto Sans SC', sans-serif;
+    font-family: 'Microsoft YaHei', sans-serif;
     background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
     display: flex;
     justify-content: center;
