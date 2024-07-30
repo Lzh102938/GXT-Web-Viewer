@@ -57,7 +57,11 @@ function parseGXT(buffer) {
 
     if (reader.hasTables()) {
         const tables = reader.parseTables(dataView);
-        return tables.flatMap(table => reader.parseTKeyTDat(dataView, table.offset));
+        return tables.flatMap(table => {
+            const texts = reader.parseTKeyTDat(dataView, table.offset);
+            texts.unshift({ key: `[${table.rawName}]`, value: null }); // Add table header
+            return texts;
+        });
     } else {
         return reader.parseTKeyTDat(dataView);
     }
@@ -66,17 +70,15 @@ function parseGXT(buffer) {
 function getVersion(dataView) {
     const bytes = new Uint8Array(dataView.buffer.slice(0, 8));
 
-    // Check for IV version
     const version = dataView.getUint16(0, true);
     const bitsPerChar = dataView.getUint16(2, true);
     if (version === 4 && bitsPerChar === 16) {
         return 'iv';
     }
 
-    // Check for SA version
     const word1 = dataView.getUint16(0, true);
     const word2 = dataView.getUint16(2, true);
-    if (word1 === 4 && bytes.slice(4, 8).toString() === '84,65,66,76') {  // 'TABL'
+    if (word1 === 4 && new TextDecoder().decode(bytes.slice(4, 8)) === 'TABL') {
         if (word2 === 8) {
             return 'sa';
         }
@@ -85,13 +87,11 @@ function getVersion(dataView) {
         }
     }
 
-    // Check for VC version
-    if (bytes.slice(0, 4).toString() === '84,65,66,76') {  // 'TABL'
+    if (new TextDecoder().decode(bytes.slice(0, 4)) === 'TABL') {
         return 'vc';
     }
 
-    // Check for III version
-    if (bytes.slice(0, 4).toString() === '84,75,69,89') {  // 'TKEY'
+    if (new TextDecoder().decode(bytes.slice(0, 4)) === 'TKEY') {
         return 'iii';
     }
 
@@ -255,7 +255,7 @@ class IV {
 
 function findBlock(stream, block) {
     let offset = 0;
-    const blockLength = 8; // Block header length
+    const blockLength = 8;
 
     while (offset < stream.byteLength) {
         const currentBlock = new TextDecoder().decode(new Uint8Array(stream.buffer.slice(offset, offset + 4)));
@@ -308,7 +308,11 @@ function displayGxtContentInTable(texts) {
     tbody.innerHTML = ''; // 清空表格
     for (const { key, value } of texts) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${key}</td><td>${value}</td>`;
+        if (value === null) {
+            tr.innerHTML = `<td colspan="2">${key}</td>`; // Table header row
+        } else {
+            tr.innerHTML = `<td>${key}</td><td>${value}</td>`; // Key-value row
+        }
         tbody.appendChild(tr);
     }
 }

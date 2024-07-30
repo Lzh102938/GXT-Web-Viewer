@@ -1,35 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GXT Viewer</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>GXT文本查看器 - By：Lzh10_慕黑 | GTAmod中文组</h1>
-        <input type="file" id="fileInput" accept=".gxt">
-        <button id="browseButton">📄 浏览GXT</button>
-        <button id="convertButton">🔄 码表转换</button>
-        <button id="saveButton">💾 保存文本</button>
-        <button id="clearButton">🗑️ 清空表格</button>
-        <table id="outputTable">
-            <thead>
-                <tr>
-                    <th>键值</th>
-                    <th>内容</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div class="container animate__animated animate__fadeIn">
+        <h1 class="title">GXT文本查看器 - By：Lzh10_慕黑 | GTAmod中文组</h1>
+        <input type="file" id="fileInput" accept=".gxt" class="file-input">
+        <div class="button-group">
+            <button id="browseButton" class="btn">📄 浏览GXT</button>
+            <button id="convertButton" class="btn">🔄 码表转换</button>
+            <button id="saveButton" class="btn">💾 保存文本</button>
+            <button id="clearButton" class="btn">🗑️ 清空表格</button>
+        </div>
+        <div class="table-container">
+            <table id="outputTable" class="table animate__animated animate__fadeInUp">
+                <thead>
+                    <tr>
+                        <th>键值</th>
+                        <th>内容</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
         <div id="aboutModal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content animate__animated animate__zoomIn">
                 <span class="close">&times;</span>
                 <p>关于内容...</p>
             </div>
         </div>
     </div>
     <script src="script.js"></script>
+    <script src="ui.js"></script>
 </body>
 </html>
