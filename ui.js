@@ -23,10 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Virtual Scroller setup
     const tableBody = document.getElementById('tableBody');
-    const data = []; // This should be filled with the actual data to display
+    const data = [];
     for (let i = 0; i < 100000; i++) {
-//        data.push({ key: `key${i}`, value: `value${i}` });
-        data.push({{i}});
+        data.push({ {i} });
     }
 
     const renderRow = (index) => {
@@ -60,18 +59,23 @@ document.addEventListener("DOMContentLoaded", () => {
             this.placeholder = document.createElement('div');
             this.placeholder.style.height = `${this.totalRows * this.rowHeight}px`;
             this.container.appendChild(this.placeholder);
+            this.container.style.position = 'relative';
+            this.container.style.height = `${this.height}px`;
+            this.container.style.overflowY = 'auto'; // Ensure scroll behavior
         }
 
         updateVisibleRows() {
-            this.container.innerHTML = '';
-            this.container.appendChild(this.placeholder);
+            const fragment = document.createDocumentFragment(); // Use fragment to avoid reflow
             for (let i = this.startIndex; i < this.endIndex; i++) {
                 const row = this.renderRow(i);
                 row.style.position = 'absolute';
-//                row.style.top = `${i * this.rowHeight}px`;
                 row.style.top = `${i * this.rowHeight}px`;
-                this.container.appendChild(row);
+                row.style.width = '100%';
+                fragment.appendChild(row);
             }
+            this.container.innerHTML = '';
+            this.container.appendChild(this.placeholder);
+            this.container.appendChild(fragment);
         }
 
         attachScrollListener() {

@@ -220,7 +220,7 @@ class IV {
     }
 
     parseTKeyTDat(stream, offset = 0) {
-        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY, offset');
+        const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY', offset);
         const TKey = [];
 
         for (let i = 0; i < tkeySize / 8; i++) {
