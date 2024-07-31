@@ -328,9 +328,9 @@ function getTableContent() {
     rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         if (cells.length == 2) {
-            content += `${cells[0].innerText}=${cells[1].innerText}\n`;
+            content += `${cells[0].innerText}=${cells[1].innerText}\r\n`;
         } else {
-            content += `${cells[0].innerText}\n`;
+            content += `${cells[0].innerText}\r\n`;
         }
     });
     return content;
