@@ -223,11 +223,11 @@ class IV {
         const { offset: tkeyOffset, size: tkeySize } = findBlock(stream, 'TKEY', offset);
         const TKey = [];
 
+        // Read TKEY entries
         for (let i = 0; i < tkeySize / 8; i++) {
-            TKey.push({
-                offset: stream.getUint32(tkeyOffset + i * 8, true),
-                crc: stream.getUint32(tkeyOffset + i * 8 + 4, true),
-            });
+            const entryOffset = stream.getUint32(tkeyOffset + i * 8, true);
+            const crc = stream.getUint32(tkeyOffset + i * 8 + 4, true);
+            TKey.push({ entryOffset, crc });
         }
 
         const { offset: tdatOffset, size: tdatSize } = findBlock(stream, 'TDAT', offset);
@@ -236,11 +236,11 @@ class IV {
         return TKey.map(entry => {
             const key = entry.crc.toString(16).padStart(8, '0').toUpperCase();
             let value = '';
-            let offset = entry.offset;
+            let entryBytesCurOffset = entry.entryOffset;
 
-            while (true) {
-                const unicodeChar = stream.getUint16(offset, true);
-                offset += 2;
+            while (entryBytesCurOffset < tdatSize) {
+                const unicodeChar = stream.getUint16(tdatOffset + entryBytesCurOffset, true);
+                entryBytesCurOffset += 2;
                 if (unicodeChar !== 0) {
                     value += String.fromCharCode(unicodeChar);
                 } else {
