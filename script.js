@@ -285,7 +285,7 @@ function _parseTables(stream) {
 function moreFeatures() {
     alert('下载本地版获取码表转换功能以及更快解析效率！');
     var link = document.createElement('a');
-    link.href = 'https://gitee.com/lzh102938/III.VC.SAGXTExtracter/releases/download/V1.2.5/III.VC.SAGXTExtracter.zip';
+    link.href = 'https://www.gtamodx.com/mod-1603';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
