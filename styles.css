@@ -1,7 +1,8 @@
+/* 引入Google字体 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
 
 body {
-    font-family: 'Microsoft YaHei', sans-serif;
+    font-family: 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
     background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
     display: flex;
     justify-content: center;
@@ -66,7 +67,7 @@ body {
 }
 
 .btn:hover {
-    background: #d63031;
+    background: #e74c3c;
 }
 
 .table-container {
@@ -92,6 +93,10 @@ body {
     background: #f7f7f7;
 }
 
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -113,6 +118,12 @@ body {
     width: 80%;
     border-radius: 10px;
     text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 .close {
@@ -127,4 +138,22 @@ body {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .file-input {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
 }
