@@ -1,17 +1,20 @@
-/* 引入Google字体 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap');
-
+/* ========== 基础样式 ========== */
 body {
     font-family: 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========== 独立模式（非嵌入）========== */
+html:not(.is-embed) body {
     background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
 }
 
-.container {
+html:not(.is-embed) .container {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 15px;
     padding: 20px;
@@ -23,6 +26,56 @@ body {
     overflow: hidden;
 }
 
+/* ========== 嵌入模式（iframe 内）========== */
+html.is-embed body {
+    background: transparent;
+    height: auto;
+    min-height: 100%;
+}
+
+html.is-embed .container {
+    background: transparent;
+    border-radius: 0;
+    padding: 8px 12px;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    box-sizing: border-box;
+}
+html.is-embed .title {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+html.is-embed .button-group {
+    margin-bottom: 8px;
+}
+html.is-embed .btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 4px;
+    margin: 2px;
+}
+html.is-embed .file-input {
+    margin-bottom: 8px;
+    padding: 6px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+html.is-embed .table-container {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    max-height: none;
+}
+html.is-embed .table th,
+html.is-embed .table td {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+/* ========== 通用组件样式 ========== */
 .title {
     font-size: 24px;
     font-weight: bold;
@@ -97,25 +150,26 @@ body {
     background-color: #f1f1f1;
 }
 
+/* ========== 弹窗 ========== */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
+    margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    max-width: 500px;
     border-radius: 10px;
     text-align: center;
     animation: fadeIn 0.5s ease-out;
@@ -131,18 +185,18 @@ body {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
-    cursor: pointer;
 }
 
-/* 响应式设计 */
+/* ========== 响应式 ========== */
 @media screen and (max-width: 600px) {
-    .container {
+    html:not(.is-embed) .container {
         width: 100%;
         padding: 10px;
     }

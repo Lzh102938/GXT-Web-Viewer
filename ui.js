@@ -1,105 +1,72 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("aboutModal");
-    const span = document.getElementsByClassName("close")[0];
+(function() {
+    'use strict';
 
-    span.onclick = () => {
-        modal.style.display = "none";
-    };
-
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
+    // ========== 嵌入模式检测 ==========
+    var isEmbed = (function() {
+        // URL 参数检测: ?embed=1
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('embed') === '1') return true;
+        // 检测是否在 iframe 中
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
         }
-    };
+    })();
 
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', () => {
+    if (isEmbed) {
+        document.documentElement.classList.add('is-embed');
+    }
+
+    // ========== iframe 高度自适应 ==========
+    function reportHeight() {
+        if (!isEmbed) return;
+        var h = document.documentElement.scrollHeight || document.body.scrollHeight;
+        window.parent.postMessage({ type: 'gxt-resize', height: h }, '*');
+    }
+
+    if (isEmbed) {
+        // 监听父页面请求高度
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'gxt-get-height') {
+                reportHeight();
+            }
+        });
+        // 内容变化时自动上报高度
+        var resizeObserver = new ResizeObserver(function() {
+            reportHeight();
+        });
+        resizeObserver.observe(document.body);
+        // 初始上报
+        window.addEventListener('load', reportHeight);
+        // DOM 变化时也上报
+        var mutationObserver = new MutationObserver(function() {
+            reportHeight();
+        });
+        mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
+    }
+
+    // ========== 弹窗逻辑 ==========
+    var modal = document.getElementById('aboutModal');
+    if (modal) {
+        var closeBtn = modal.querySelector('.close');
+        if (closeBtn) {
+            closeBtn.onclick = function() { modal.style.display = 'none'; };
+        }
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
+    // ========== 按钮点击动画 ==========
+    document.querySelectorAll('.btn').forEach(function(button) {
+        button.addEventListener('click', function() {
             button.classList.add('animate__animated', 'animate__pulse');
-            setTimeout(() => {
+            setTimeout(function() {
                 button.classList.remove('animate__animated', 'animate__pulse');
             }, 1000);
         });
     });
-
-    const tableBody = document.getElementById('tableBody');
-    const data = [];
-    for (let i = 0; i < 100000; i++) {
-        data.push({ key: `键值${i}`, value: `内容${i}` });
-    }
-
-    // 修改的渲染行函数，只显示行号，不显示具体内容
-const renderRow = (index) => {
-    const row = document.createElement('tr');
-    const keyCell = document.createElement('td');
-    keyCell.textContent = `行号 ${index + 1}`;
-    row.appendChild(keyCell);
-    return row;
-};
-
-class VirtualTableScroller {
-    constructor({ container, height, rowHeight, totalRows, renderRow }) {
-        this.container = container;
-        this.height = height;
-        this.rowHeight = rowHeight;
-        this.totalRows = totalRows;
-        this.renderRow = renderRow;
-        this.visibleRows = Math.ceil(this.height / this.rowHeight);
-        this.startIndex = 0;
-        this.endIndex = this.visibleRows;
-
-        this.createPlaceholder();
-        this.updateVisibleRows();
-        this.attachScrollListener();
-    }
-
-    createPlaceholder() {
-        this.placeholder = document.createElement('div');
-        this.placeholder.style.height = `${this.totalRows * this.rowHeight}px`;
-        this.container.appendChild(this.placeholder);
-        this.container.style.position = 'relative';
-        this.container.style.height = `${this.height}px`;
-        this.container.style.overflowY = 'auto';
-    }
-
-    updateVisibleRows() {
-        const fragment = document.createDocumentFragment();
-        for (let i = this.startIndex; i < this.endIndex; i++) {
-            const row = this.renderRow(i);
-            row.style.position = 'absolute';
-            row.style.top = `${i * this.rowHeight}px`;
-            row.style.width = '100%';
-            fragment.appendChild(row);
-        }
-        this.container.innerHTML = '';
-        this.container.appendChild(this.placeholder);
-        this.container.appendChild(fragment);
-    }
-
-    attachScrollListener() {
-        this.container.addEventListener('scroll', () => {
-            const scrollTop = this.container.scrollTop;
-            const newStartIndex = Math.floor(scrollTop / this.rowHeight);
-            const newEndIndex = Math.min(newStartIndex + this.visibleRows, this.totalRows);
-
-            if (newStartIndex !== this.startIndex || newEndIndex !== this.endIndex) {
-                this.startIndex = newStartIndex;
-                this.endIndex = newEndIndex;
-                this.updateVisibleRows();
-            }
-        });
-    }
-}
-
-const tableBody = document.getElementById('tableBody');
-const data = [];
-for (let i = 0; i < 100000; i++) {
-    data.push({ key: `键值${i}`, value: `内容${i}` });
-}
-
-new VirtualTableScroller({
-    container: tableBody,
-    height: 500,  // 确保这里高度设置正确
-    rowHeight: 30,  // 确保每行的高度设置合适
-    totalRows: data.length,
-    renderRow
-});
+})();

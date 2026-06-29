@@ -9,18 +9,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body, html {
+        /* 嵌入模式：全透明，无割裂 */
+        html.is-embed, html.is-embed body {
+            margin: 0;
+            padding: 0;
+            height: auto;
+            min-height: 100%;
+            overflow: visible;
+            background: transparent !important;
+        }
+        html.is-embed .container {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        html.is-embed .table-container {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+        /* 独立模式：保留全屏居中 */
+        html:not(.is-embed) body, html:not(.is-embed) {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
         }
-        .container {
+        html:not(.is-embed) .container {
             height: 100%;
             display: flex;
             flex-direction: column;
         }
-        .table-container {
+        html:not(.is-embed) .table-container {
             flex: 1;
             overflow-y: auto;
             position: relative;
@@ -28,7 +48,7 @@
     </style>
 </head>
 <body>
-    <div class="container animate__animated animate__fadeIn">
+    <div class="container animate__animated animate__fadeIn" id="mainContainer">
         <h1 class="title">GXT文本查看器 - By：Lzh10_慕黑 | GTAmod中文组</h1>
         <input type="file" id="fileInput" accept=".gxt" class="file-input">
         <div class="button-group">
